@@ -156,3 +156,13 @@ class GeventCheckInterval(Setting):
     desc = """\
         The inteval in which to check if gevent ioloop is blocked.
     """
+
+class WorkerTimeout(Setting):
+    name = "worker_timeout"
+    section = "Worker Processes"
+    cli = ["--worker-timeout"]
+    validator = validate_pos_int
+    default = None
+    desc = """\
+        The workers will be restarted gracefully when worked after a period of time.
+    """
