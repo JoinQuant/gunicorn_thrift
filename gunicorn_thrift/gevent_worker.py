@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import errno
 import socket
 import logging
@@ -46,7 +47,8 @@ class GeventThriftWorker(GeventWorker, ProcessorMixin):
             try:
                 while True:
                     self.nr += 1
-                    if self.alive and self.nr >= self.max_requests:
+                    if self.alive and (self.nr >= self.max_requests or (self.cfg.worker_timeout and
+                        int(self.tmp.last_update()) - int(os.fstat(self.tmp.fileno()).st_mtime) > self.cfg.worker_timeout)):
                         self.log.info("Autorestarting worker after current process.")
                         self.alive = False
                     processor.process(iprot, oprot)
