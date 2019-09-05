@@ -166,3 +166,13 @@ class WorkerTimeout(Setting):
     desc = """\
         The workers will be restarted gracefully when worked after a period of time.
     """
+
+class MaxMemoryPercent(Setting):
+    name = "max_memory_percent"
+    section = "Max Memory Percent"
+    cli = ["--max-memory-percent"]
+    validator = validate_pos_int
+    default = 90
+    desc = """\
+        The workers will be restarted gracefully when worker using memory percent more than this value.
+    """
