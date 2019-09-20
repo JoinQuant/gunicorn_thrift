@@ -82,6 +82,7 @@ def check_protocol_and_transport(app):
 
 
 class GeventThriftPyWorker(GeventWorker, ProcessorMixin):
+    clients = []
     def init_process(self):
         # Set up a greenlet tracing hook to monitor for event-loop blockage,
         # but only if monitoring is both possible and required.
@@ -159,6 +160,7 @@ class GeventThriftPyWorker(GeventWorker, ProcessorMixin):
         super(GeventThriftPyWorker, self).run()
 
     def handle(self, listener, client, addr):
+        self.clients.append(client)
         self.cfg.on_connected(self, addr)
         if self.app.cfg.thrift_client_timeout is not None:
             client.settimeout(self.app.cfg.thrift_client_timeout)
